@@ -12,8 +12,7 @@ return [
     | you want to customize your views to better match your application.
     |
     */
-
-    'previous' => '&laquo; Previous',
-    'next' => 'Next &raquo;',
+    'previous' => '&laquo; 上一頁',
+    'next'     => '下一頁 &raquo;',
 
 ];
