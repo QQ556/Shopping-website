@@ -23,11 +23,7 @@ class CreateUsersTable extends Migration
             //A->Admin
             //G->General
             $table->string('type',1)->default('G');//帳號狀態
-            $table->string('nickname',50);
             $table->timestamps();
-
-            //鑑值索引
-            $table->uniqid(['email'],'user_email_uk');
         });
     }
 
