@@ -60,6 +60,8 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('登出') }}
                                     </a>
+                                    <a class="dropdown-item" href="/merchandise/create">新增商品</a>
+                                    <a class="dropdown-item" href="/merchandise">商品列表頁</a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
