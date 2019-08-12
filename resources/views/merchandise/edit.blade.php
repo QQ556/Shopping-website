@@ -12,7 +12,8 @@
 <div class="container">
     <form action="/merchandise/{{$Merchandise->id}}" method='post' enctype="multipart/form-data">
         {{-- 方法欄位 --}}
-        {{method_field('PUT')}}
+        {{ method_field('PUT') }}
+
         <div class="form-group">
             商品狀態:
             <select name="status">
@@ -66,13 +67,13 @@
 
         <div class="form-group">
             商品剩餘數量
-            <input class="form-control form-control-lg" type="text" type="text" name="price" placeholder="商品剩餘數量"
-                value="{{ old('price',$Merchandise->introduction_en)}}">
+            <input class="form-control form-control-lg" type="text" type="text" name="remain_count" placeholder="商品剩餘數量"
+                value="{{ old('remain_count',$Merchandise->introduction_en)}}">
         </div>
 
         <button type="submit" class="btn btn-danger">更新產品資訊</button>
         {{-- CSRF --}}
-        @csrf
+        {{ csrf_field() }}
 </div>
 </form>
 </div>
