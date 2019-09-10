@@ -27,8 +27,13 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
-});
-
-
+Back_to_home = function (){
+  var b = setTimeout("window.location='/';",800)
+}
+delete_Merchandise = function(id){
+  let result = confirm('確定要刪除嗎???');
+  if(result){
+    let actionUrl = '/merchandise/'+id;
+    $("#delete-form").attr('action',actionUrl).submit();
+  }
+}

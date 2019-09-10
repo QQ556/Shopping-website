@@ -1,8 +1,9 @@
-@extends('layouts.app');
+@extends('layouts.app')
 @section('content')
 @section('title',$title)
 <div class="container">
     <h1>{{$title}}</h1>
+    <a class="btn btn-success float-right mb-2 " href="/merchandise/create">新增商品</a>
 </div>
 
 
@@ -25,7 +26,7 @@
             <td>{{ $Merchandise->id }}</td>
             <td>{{ $Merchandise->name }}</td>
             {{-- 商品圖片 --}}
-            <td><img src="{{ $Merchandise->photo = $Merchandise->photo ??'/assets/images/default-merchandise.png'}}"
+            <td><img class="img-fluid" src="{{ $Merchandise->photo = $Merchandise->photo ??'/assets/images/default-merchandise.png'}}"
                     alt=""></td>
             <td>
                 @if ($Merchandise->status =='C')
@@ -37,7 +38,8 @@
             <td>{{$Merchandise->price}}</td>
             <td>{{$Merchandise->remain_count}}</td>
             <td>
-                <a href="/merchandise/{{ $Merchandise->id}}/edit">編輯</a>
+                <a class="btn btn-primary" href="/merchandise/{{ $Merchandise->id}}/edit">編輯</a>
+                <button class="btn btn-danger" onclick="delete_Merchandise({{ $Merchandise->id}})">刪除</button>
             </td>
         </tr>
         @endforeach
@@ -46,4 +48,8 @@
 </div>
 </form>
 </div>
+<form id="delete-form" action="/merchandise/id" method="post">
+    <input type="hidden" name="_method" value="delete">
+    @csrf
+</form>
 @endsection

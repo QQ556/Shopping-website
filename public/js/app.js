@@ -49215,9 +49215,18 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-var app = new Vue({
-  el: '#app'
-});
+Back_to_home = function Back_to_home() {
+  var b = setTimeout("window.location='/';", 800);
+};
+
+delete_Merchandise = function delete_Merchandise(id) {
+  var result = confirm('確定要刪除嗎???');
+
+  if (result) {
+    var actionUrl = '/merchandise/' + id;
+    $("#delete-form").attr('action', actionUrl).submit();
+  }
+};
 
 /***/ }),
 
