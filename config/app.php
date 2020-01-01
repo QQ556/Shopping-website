@@ -1,6 +1,6 @@
 <?php
 
-return [    
+return [
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -52,7 +52,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://laravel.shop.com'),
-    
+
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -138,7 +138,8 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
-        Laravel\Socialite\SocialiteServiceProvider::class,//Socialite
+        Darryldecode\Cart\CartServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class, //Socialite
         Intervention\Image\ImageServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
@@ -162,7 +163,10 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        
+
+
+
+
 
         /*
          * Package Service Providers...
@@ -191,7 +195,8 @@ return [
     */
 
     'aliases' => [
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class,//Socialite
+        'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class, //Socialite
         'Image' => Intervention\Image\Facades\Image::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,

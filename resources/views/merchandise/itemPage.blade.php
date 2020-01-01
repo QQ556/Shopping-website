@@ -26,7 +26,7 @@
             <td>{{ $Merchandise->id }}</td>
             <td>{{ $Merchandise->name }}</td>
             {{-- 商品圖片 --}}
-            <td><img class="img-fluid" src="{{ $Merchandise->photo = $Merchandise->photo ??'/assets/images/default-merchandise.png'}}"
+            <td><img class="img-fluid lazyload" src="{{ $Merchandise->photo = $Merchandise->photo ??'/assets/images/default-merchandise.png'}}"
                     alt=""></td>
             <td>
                 @if ($Merchandise->status =='C')

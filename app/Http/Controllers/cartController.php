@@ -3,47 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\shop\Merchandise;
-use App\Transaction;
-use App\User;
-use Illuminate\Support\Facades\DB;
-use Validator;
-use Image;
-use PHPUnit\Runner\Exception;
+use Darryldecode\Cart\Cart;
+use Illuminate\Support\Facades\Validator;
+use auth;
 use Illuminate\Support\Facades\Log;
-use Session;
+use App\shop\Merchandise;
+use Illuminate\Support\Facades\DB;
 
-class TransactionController extends Controller
+class cartController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function listPage()
+    public function index()
     {
-        $user_id = session()->get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
-        //每頁資料量
-        $row_per_page = 10;
-        //撈取商品頁資料
-        $TransactionPaginate = Transaction::where('user_id',$user_id)
-        ->OrderBy('created_at','desc')
-        ->with('Merchandise')
-        ->paginate($row_per_page);
-
-        //設定商品圖片網址
-        foreach($TransactionPaginate as &$Transaction){
-            if(!is_null($Transaction->Merchandise->photo)){
-                //設定商品照片網址
-                $Transaction->Merchandise->photo = url($Transaction->Merchandise->photo);
-            }
-        }
-
-        $binding =[
-            'title'=>'交易紀錄',
-            'TransactionPaginate' => $TransactionPaginate,
-        ];
-        return view('transaction.listUserTransaction',$binding);
+        //
     }
 
     /**
@@ -51,9 +27,48 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function cart()
     {
-        //
+        $data = \Cart::getContent();
+        foreach ($data as &$dataitem) {
+            $id = $dataitem->id;
+            $Merchandise = Merchandise::where('id', $id)->first();
+            //設定商品圖片網址
+            if (!is_null($Merchandise->photo)) {
+                $Merchandise->photo = url($Merchandise->photo);
+            }
+        }
+        Log::debug($Merchandise->photo);
+        return view('cart.cart', [
+            'Merchandise' => $Merchandise
+        ]);
+    }
+    public function add(Request $res)
+    {
+        $add = \Cart::add([
+            'id' => $res->id,
+            'name' => $res->name,
+            'price' => $res->price,
+            'quantity' => $res->quantity
+        ]);
+        if ($add) {
+            return view('cart.cart', [
+                'data' => \Cart::getcontent()
+            ]);
+        }
+    }
+
+    public function emptyCart()
+    {
+        $userId = Auth::id(); // get this from session or wherever it came from
+        Cart::clear();
+        Log::debug($userId);
+    }
+
+    public function remove()
+    {
+        cart::remove(3);
+        return redirect('/cart');
     }
 
     /**
@@ -107,8 +122,4 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
 }

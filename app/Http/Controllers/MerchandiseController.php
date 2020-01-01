@@ -52,8 +52,11 @@ class MerchandiseController extends Controller
      */
     public function create()
     {
+        $user_id = session()->get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+
         $Merchandise_date = [
             "status"            => "C",    //建立中
+            "user_id"            => "$user_id",    
             "name"                => '',
             "name_en"           => '',
             "introduction"      => '',
@@ -85,11 +88,11 @@ class MerchandiseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    //(客用)商品列表檢視
+    //(客用)商品首頁檢視
     public function listMerchandise()
     {
         //每頁資料量
-        $row_per_page = 12;
+        $row_per_page = 24;
         //撈取分頁資料
         $MerchandisePaginate = Merchandise::Orderby('updated_at', 'desc')
             ->where('status', 'C') //可販售
@@ -108,6 +111,56 @@ class MerchandiseController extends Controller
         ];
         return view('merchandise.listMerchandise', $binding);
     }
+    //(客用)商品首頁價格降序排列
+    public function price_down()
+    {
+        //每頁資料量
+        $row_per_page = 24;
+        //撈取分頁資料
+        $MerchandisePaginate = Merchandise::Orderby('price', 'desc')
+            ->where('status', 'C') //可販售
+            ->paginate($row_per_page);
+
+        //設定商品圖片網址
+        foreach ($MerchandisePaginate as &$Merchandise) {
+            if (!is_null($Merchandise->photo)) {
+                //設定商品圖片網址
+                $Merchandise->photo = url($Merchandise->photo);
+            }
+        }
+        $binding = [
+            'title' => '商品列表',
+            'MerchandisePaginate' => $MerchandisePaginate,
+        ];
+        return view('merchandise.listMerchandise', $binding);
+    }
+    //(客用)商品首頁價格遞升排序
+    public function price_up()
+    {
+        //每頁資料量
+        $row_per_page = 24;
+        //撈取分頁資料
+        $MerchandisePaginate = Merchandise::Orderby('price', 'asc')
+            ->where('status', 'C') //可販售
+            ->paginate($row_per_page);
+
+        //設定商品圖片網址
+        foreach ($MerchandisePaginate as &$Merchandise) {
+            if (!is_null($Merchandise->photo)) {
+                //設定商品圖片網址
+                $Merchandise->photo = url($Merchandise->photo);
+            }
+        }
+        $binding = [
+            'title' => '商品列表',
+            'MerchandisePaginate' => $MerchandisePaginate,
+        ];
+        return view('merchandise.listMerchandise', $binding);
+    }
+
+
+
+
 
     //(客用)商品單品檢視
     public function itemMerchandise($merchandise_id)
@@ -126,10 +179,7 @@ class MerchandiseController extends Controller
         ];
         return view('merchandise.itemMerchandise', $binding);
     }
-
-    // 測試中
-    // 測試中
-    // 測試中
+    //(客用)商品單品檢視結束
 
     //商品購買
     public function itemMerchandiseBuy($merchandise_id)
@@ -257,8 +307,8 @@ class MerchandiseController extends Controller
         //撈資料
         $Merchandise = Merchandise::findOrFail($merchandise_id);
         $Merchandise->delete();
-         //重導編輯頁
-         return redirect('/merchandise/manage');
+        //重導編輯頁
+        return redirect('/merchandise/manage');
     }
 
     /**

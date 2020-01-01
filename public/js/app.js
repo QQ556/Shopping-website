@@ -16798,6 +16798,194 @@ return jQuery;
 
 /***/ }),
 
+/***/ "./node_modules/lazyload/lazyload.js":
+/*!*******************************************!*\
+  !*** ./node_modules/lazyload/lazyload.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {/*!
+ * Lazy Load - JavaScript plugin for lazy loading images
+ *
+ * Copyright (c) 2007-2019 Mika Tuupola
+ *
+ * Licensed under the MIT license:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *
+ * Project home:
+ *   https://appelsiini.net/projects/lazyload
+ *
+ * Version: 2.0.0-rc.2
+ *
+ */
+
+(function (root, factory) {
+    if (true) {
+        module.exports = factory(root);
+    } else {}
+}) (typeof global !== "undefined" ? global : this.window || this.global, function (root) {
+
+    "use strict";
+
+    if (true){
+        root = window;
+    }
+
+    const defaults = {
+        src: "data-src",
+        srcset: "data-srcset",
+        selector: ".lazyload",
+        root: null,
+        rootMargin: "0px",
+        threshold: 0
+    };
+
+    /**
+    * Merge two or more objects. Returns a new object.
+    * @private
+    * @param {Boolean}  deep     If true, do a deep (or recursive) merge [optional]
+    * @param {Object}   objects  The objects to merge together
+    * @returns {Object}          Merged values of defaults and options
+    */
+    const extend = function ()  {
+
+        let extended = {};
+        let deep = false;
+        let i = 0;
+        let length = arguments.length;
+
+        /* Check if a deep merge */
+        if (Object.prototype.toString.call(arguments[0]) === "[object Boolean]") {
+            deep = arguments[0];
+            i++;
+        }
+
+        /* Merge the object into the extended object */
+        let merge = function (obj) {
+            for (let prop in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+                    /* If deep merge and property is an object, merge properties */
+                    if (deep && Object.prototype.toString.call(obj[prop]) === "[object Object]") {
+                        extended[prop] = extend(true, extended[prop], obj[prop]);
+                    } else {
+                        extended[prop] = obj[prop];
+                    }
+                }
+            }
+        };
+
+        /* Loop through each object and conduct a merge */
+        for (; i < length; i++) {
+            let obj = arguments[i];
+            merge(obj);
+        }
+
+        return extended;
+    };
+
+    function LazyLoad(images, options) {
+        this.settings = extend(defaults, options || {});
+        this.images = images || document.querySelectorAll(this.settings.selector);
+        this.observer = null;
+        this.init();
+    }
+
+    LazyLoad.prototype = {
+        init: function() {
+
+            /* Without observers load everything and bail out early. */
+            if (!root.IntersectionObserver) {
+                this.loadImages();
+                return;
+            }
+
+            let self = this;
+            let observerConfig = {
+                root: this.settings.root,
+                rootMargin: this.settings.rootMargin,
+                threshold: [this.settings.threshold]
+            };
+
+            this.observer = new IntersectionObserver(function(entries) {
+                Array.prototype.forEach.call(entries, function (entry) {
+                    if (entry.isIntersecting) {
+                        self.observer.unobserve(entry.target);
+                        let src = entry.target.getAttribute(self.settings.src);
+                        let srcset = entry.target.getAttribute(self.settings.srcset);
+                        if ("img" === entry.target.tagName.toLowerCase()) {
+                            if (src) {
+                                entry.target.src = src;
+                            }
+                            if (srcset) {
+                                entry.target.srcset = srcset;
+                            }
+                        } else {
+                            entry.target.style.backgroundImage = "url(" + src + ")";
+                        }
+                    }
+                });
+            }, observerConfig);
+
+            Array.prototype.forEach.call(this.images, function (image) {
+                self.observer.observe(image);
+            });
+        },
+
+        loadAndDestroy: function () {
+            if (!this.settings) { return; }
+            this.loadImages();
+            this.destroy();
+        },
+
+        loadImages: function () {
+            if (!this.settings) { return; }
+
+            let self = this;
+            Array.prototype.forEach.call(this.images, function (image) {
+                let src = image.getAttribute(self.settings.src);
+                let srcset = image.getAttribute(self.settings.srcset);
+                if ("img" === image.tagName.toLowerCase()) {
+                    if (src) {
+                        image.src = src;
+                    }
+                    if (srcset) {
+                        image.srcset = srcset;
+                    }
+                } else {
+                    image.style.backgroundImage = "url('" + src + "')";
+                }
+            });
+        },
+
+        destroy: function () {
+            if (!this.settings) { return; }
+            this.observer.disconnect();
+            this.settings = null;
+        }
+    };
+
+    root.lazyload = function(images, options) {
+        return new LazyLoad(images, options);
+    };
+
+    if (root.jQuery) {
+        const $ = root.jQuery;
+        $.fn.lazyload = function (options) {
+            options = options || {};
+            options.attribute = options.attribute || "data-src";
+            new LazyLoad($.makeArray(this), options);
+            return this;
+        };
+    }
+
+    return LazyLoad;
+});
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
 /***/ "./node_modules/lodash/lodash.js":
 /*!***************************************!*\
   !*** ./node_modules/lodash/lodash.js ***!
@@ -49195,7 +49383,10 @@ module.exports = function(module) {
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); //引用lazyload
+
+
+__webpack_require__(/*! lazyload */ "./node_modules/lazyload/lazyload.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /**
@@ -49217,7 +49408,8 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 
 Back_to_home = function Back_to_home() {
   var b = setTimeout("window.location='/';", 800);
-};
+}; //刪除商品
+
 
 delete_Merchandise = function delete_Merchandise(id) {
   var result = confirm('確定要刪除嗎???');
@@ -49226,7 +49418,82 @@ delete_Merchandise = function delete_Merchandise(id) {
     var actionUrl = '/merchandise/' + id;
     $("#delete-form").attr('action', actionUrl).submit();
   }
+}; //搜尋方塊展開
+
+
+$(document).ready(function () {
+  $("#search").click(function () {
+    $("#search_input").attr("class", "open_find_btn");
+  }).on("mouseleave", function () {
+    $("#search_input").attr("class", "close_find_btn");
+  });
+}); //facebook SDK start
+
+window.fbAsyncInit = function () {
+  FB.init({
+    appId: 'your-app-id',
+    autoLogAppEvents: true,
+    xfbml: true,
+    version: 'v2.11'
+  });
 };
+
+(function (d, s, id) {
+  var js,
+      fjs = d.getElementsByTagName(s)[0];
+
+  if (d.getElementById(id)) {
+    return;
+  }
+
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://connect.facebook.net/en_US/sdk.js";
+  fjs.parentNode.insertBefore(js, fjs);
+})(document, 'script', 'facebook-jssdk'); //facebook SDK end
+//輪播圖
+
+
+$('.carousel').carousel({
+  interval: 2000
+}); //延遲載圖片
+
+var images = document.querySelectorAll(".lazy");
+lazyload(images); //首頁價格按鈕 轉地址
+
+$("#pricebtn").click(function () {
+  var url = location.pathname;
+
+  if (location.pathname == "/") {
+    window.location.href = "/price_down";
+  } else if (location.pathname == "/price_down") {
+    location.pathname = "/price_up";
+  } else if (location.pathname == "/price_up") {
+    location.pathname = "/";
+  }
+}); //搜尋價格按鈕 轉地址
+
+$("#pricebtn_search").click(function () {
+  var url = location.pathname;
+
+  if (location.pathname == "/search") {
+    window.location.href = "/search/price_down";
+  } else if (location.pathname == "/search/price_down") {
+    location.pathname = "/search/price_up";
+  } else if (location.pathname == "/search/price_up") {
+    location.pathname = "/search/";
+  }
+}); //價格按鈕圖案
+
+if (window.location.pathname.slice(-11) == "/price_down") {
+  $("#pricebtn,#pricebtn_search").text("trending_down 價格");
+} else if (window.location.pathname.slice(-9) == "/price_up") {
+  $("#pricebtn,#pricebtn_search").text("trending_up 價格");
+}
+
+$('#destroy').click(function () {
+  alert('click');
+});
 
 /***/ }),
 

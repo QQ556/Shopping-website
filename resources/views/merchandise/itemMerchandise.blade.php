@@ -17,7 +17,7 @@
         <tr>
             <th>照片</th>
             <td>
-                <img class="w-100" src="{{$Merchandise->photo = $Merchandise->photo ??'/assets/images/default-merchandise.png'}}">
+                <img class="Merchandise_pic" src="{{$Merchandise->photo = $Merchandise->photo ??'/assets/images/default-merchandise.png'}}">
             </td>
         </tr>
         <tr>

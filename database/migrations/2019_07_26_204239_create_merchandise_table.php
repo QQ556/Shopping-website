@@ -17,6 +17,7 @@ class CreateMerchandiseTable extends Migration
             $table->bigIncrements('id');//商品編號
             //C->Create S->Sell 
             $table->string('status',1)->default('C');
+            $table->integer('user_id');
             $table->string('name',80)->nullable();
             $table->string('name_en',80)->nullable();
             $table->text('introduction');

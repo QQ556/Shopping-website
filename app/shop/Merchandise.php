@@ -13,6 +13,7 @@ class Merchandise extends Model
     protected $fillable = [
         'id',
         'status',
+        'user_id',
         'name',
         'name_en',
         'introduction',
@@ -21,4 +22,8 @@ class Merchandise extends Model
         'price',
         'remain_count'
     ];
+    public function User()
+    {   
+        return $this->hasOne('app\User','id','user_id');
+    }
 }

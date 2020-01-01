@@ -3,47 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\shop\Merchandise;
-use App\Transaction;
-use App\User;
-use Illuminate\Support\Facades\DB;
-use Validator;
-use Image;
-use PHPUnit\Runner\Exception;
 use Illuminate\Support\Facades\Log;
-use Session;
+use Illuminate\Support\Facades\Input;
 
-class TransactionController extends Controller
+class MessageController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function listPage()
+    public function index()
     {
-        $user_id = session()->get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
-        //每頁資料量
-        $row_per_page = 10;
-        //撈取商品頁資料
-        $TransactionPaginate = Transaction::where('user_id',$user_id)
-        ->OrderBy('created_at','desc')
-        ->with('Merchandise')
-        ->paginate($row_per_page);
-
-        //設定商品圖片網址
-        foreach($TransactionPaginate as &$Transaction){
-            if(!is_null($Transaction->Merchandise->photo)){
-                //設定商品照片網址
-                $Transaction->Merchandise->photo = url($Transaction->Merchandise->photo);
-            }
-        }
-
-        $binding =[
-            'title'=>'交易紀錄',
-            'TransactionPaginate' => $TransactionPaginate,
-        ];
-        return view('transaction.listUserTransaction',$binding);
+        //
     }
 
     /**
@@ -51,9 +23,11 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $result = $request->all();
+        $input = Input::all();
+        Log::debug($input);
     }
 
     /**
