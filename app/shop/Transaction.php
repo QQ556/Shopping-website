@@ -7,6 +7,7 @@ class Transaction extends Model
 {
     //資料表名稱
     protected $table = 'transaction';
+ 
     //主見名稱
     protected $primarykey = 'id';
     
@@ -19,8 +20,9 @@ class Transaction extends Model
         'buy_count',
         'total_price',
     ];
+
     public function Merchandise()
-    {   
-        return $this->hasOne('App\Merchandise','id','merchandise_id');
+    {
+        return $this->hasOne('App\shop\Merchandise','id','merchandise_id');
     }
 }

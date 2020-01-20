@@ -49491,8 +49491,15 @@ if (window.location.pathname.slice(-11) == "/price_down") {
   $("#pricebtn,#pricebtn_search").text("trending_up 價格");
 }
 
+;
 $('#destroy').click(function () {
   alert('click');
+}); //ajax crsf
+
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
 });
 
 /***/ }),

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+
 <form action={{url('add')}} method="POST">
     @csrf
     商品<input type="text" name="id" value="2"><br>

@@ -25,17 +25,29 @@
 </div>
 {{-- 左側欄開始 --}}
 <div class="col-md-1 ">
-    <div class="sticky-top float-right">
-        <i id="question_answer" data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-dark material-icons md-48 ">question_answer</i>
-        <form action="/search" class="form-inline my-2 my-lg-0" method="POST">
-            {{ csrf_field() }}
-            <i id="search" class="btn btn-outline-dark material-icons md-48 mt-4">search
-                <input id="search_input" type="text" class="close_find_btn" autocomplete="off" autofocus="ture"
-                    placeholder="商品搜尋">
-            </i>
-        </form>
+    <div class="sticky-top">
+        <div class="float-right">
+            <a href="{{url('/cart')}}" id="shopping_cart" class=" btn btn-outline-dark ">
+                <span class='badge badge-warning' id='lblCartCount'>
+                    @if (isset($cartTotalQuantity))
+                    {{$cartTotalQuantity}}
+                    @endif
+                </span>
+                <i id="shopping_cart" class="material-icons  md-48">shopping_cart</i>
+            </a>
+        </div>
+        <div class="float-right">
+            <form action="/search" class="form-inline my-2 my-lg-0" method="POST">
+                {{ csrf_field() }}
+                <i id="search" class="btn btn-outline-dark material-icons md-48 mt-4">search
+                    <input id="search_input" type="search" class="close_find_btn" autocomplete="off" autofocus="ture"
+                        placeholder="商品搜尋" name="query">
+                </i>
+            </form>
+            <div class="p-2" id="formResults"></div>
+        </div>
+
     </div>
-    <div class="p-2" id="formResults"></div>
 </div>
 {{-- 左側欄結束 --}}
 </div>

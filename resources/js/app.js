@@ -6,8 +6,10 @@
 
 require('./bootstrap');
 
+
 //引用lazyload
 require('lazyload');
+
 
 window.Vue = require('vue');
 
@@ -111,8 +113,15 @@ if(window.location.pathname.slice(-11) == "/price_down"){
 }
 else if(window.location.pathname.slice(-9) == "/price_up"){
   $("#pricebtn,#pricebtn_search").text("trending_up 價格");
-}
+};
 
 $('#destroy').click(function () {
   alert('click');
-})
+});
+
+//ajax crsf
+$.ajaxSetup({
+  headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});

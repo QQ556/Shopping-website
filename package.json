@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@material/tab-bar": "^3.1.0",
+        "bootstrap-input-spinner": "^1.13.3",
         "lazyload": "^2.0.0-rc.2",
         "material-design-icons": "^3.0.1"
     }

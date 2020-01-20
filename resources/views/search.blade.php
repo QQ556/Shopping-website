@@ -5,8 +5,8 @@
 <div class="container mt-4">
     <div class="row justify-content-between">
         <div class="btn-group-lg mb-2" role="group" aria-label="Basic example">
-            <a class="btn btn-secondary" href="http://laravel.shop.com/bestsell">銷售量</a>
-            <button id="pricebtn_search" class="btn btn-secondary material-icons">價格</button>
+            {{-- <a class="btn btn-secondary" href="http://laravel.shop.com/bestsell">銷售量</a> --}}
+            <button id="pricebtn_search" class="btn btn-secondary material-icons">價格排序</button>
         </div>
         @isset($MerchandisePaginate)
         <div>

@@ -28,7 +28,7 @@ Route::get('form', function () {
     return view('cart.form');
 }); 
 
-Route::post('add','cartController@add');
+Route::any('add','cartController@add');
 Route::delete('remove','cartController@remove');
 
 Route::get('cart','cartController@cart');

@@ -1,11 +1,11 @@
-{{-- 線上詢問 --}}
-@include('layouts.modal')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-sca le=1">
+
+
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -14,7 +14,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-
+    
+    
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -102,12 +103,23 @@
                                     onclick="event.preventDefault();document.getElementById('logout-form').submit()">
                                     {{ __('登出') }}
                                 </a>
+                                @if (Auth::user()->type === "A")
+                                {{-- 管理員 --}}
                                 <a class="dropdown-item" href="/merchandise/manage">商品管理員頁</a>
                                 <a class="dropdown-item" href="/merchandise/transaction">交易紀錄</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                     style="display: none">
                                     @csrf
                                 </form>
+
+                                @else
+                                {{-- 一般用戶 --}}
+                                <a class="dropdown-item" href="/merchandise/transaction">交易紀錄</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none">
+                                    @csrf
+                                </form>
+                                @endif
                             </div>
                         </li>
                         <li class="nav-item dropdown">

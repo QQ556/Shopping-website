@@ -29,31 +29,54 @@ class cartController extends Controller
      */
     public function cart()
     {
-        $data = \Cart::getContent();
-        foreach ($data as &$dataitem) {
-            $id = $dataitem->id;
-            $Merchandise = Merchandise::where('id', $id)->first();
-            //設定商品圖片網址
-            if (!is_null($Merchandise->photo)) {
-                $Merchandise->photo = url($Merchandise->photo);
+        $Cart = \Cart::getContent();
+        //find Cart id and to link merchandise id 
+        foreach ($Cart as &$Cartitem) {
+            $id = $Cartitem->id;
+            $Cartitem->merchandise  = Merchandise::find($id);
+            if (!is_null($Cartitem->merchandise->photo)) {
+                //設定商品圖片網址
+                $Cartitem->merchandise->photo = url($Cartitem->merchandise->photo);
             }
         }
-        Log::debug($Merchandise->photo);
+
         return view('cart.cart', [
-            'Merchandise' => $Merchandise
+            // 'Merchandise' => $MerchandiseArray,
+            'Cart' => $Cart
         ]);
     }
+
+
+    public function ajaxRequestPost(Request $request)
+
+    {
+        $input = $request->all();
+        return response()->json(['success' => 'Got Simple Ajax Request.']);
+    }
+
+
     public function add(Request $res)
     {
         $add = \Cart::add([
             'id' => $res->id,
             'name' => $res->name,
             'price' => $res->price,
-            'quantity' => $res->quantity
+            'quantity' => $res->quantity,
         ]);
         if ($add) {
+
+            $Cart = \Cart::getContent();
+            foreach ($Cart as &$Cartitem) {
+                $id = $Cartitem->id;
+                $Cartitem->merchandise  = Merchandise::find($id);
+                if (!is_null($Cartitem->merchandise->photo)) {
+                    //設定商品圖片網址
+                    $Cartitem->merchandise->photo = url($Cartitem->merchandise->photo);
+                }
+            }
+
             return view('cart.cart', [
-                'data' => \Cart::getcontent()
+                'Cart' => \Cart::getcontent()
             ]);
         }
     }

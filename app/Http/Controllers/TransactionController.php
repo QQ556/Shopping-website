@@ -30,7 +30,7 @@ class TransactionController extends Controller
         ->OrderBy('created_at','desc')
         ->with('Merchandise')
         ->paginate($row_per_page);
-
+        
         //設定商品圖片網址
         foreach($TransactionPaginate as &$Transaction){
             if(!is_null($Transaction->Merchandise->photo)){
@@ -38,6 +38,7 @@ class TransactionController extends Controller
                 $Transaction->Merchandise->photo = url($Transaction->Merchandise->photo);
             }
         }
+        
 
         $binding =[
             'title'=>'交易紀錄',

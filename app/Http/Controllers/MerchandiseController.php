@@ -12,6 +12,8 @@ use Image;
 use PHPUnit\Runner\Exception;
 use Illuminate\Support\Facades\Log;
 use Session;
+use Darryldecode\Cart\Cart;
+
 
 class MerchandiseController extends Controller
 {
@@ -88,7 +90,7 @@ class MerchandiseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    //(客用)商品首頁檢視
+    //(客用)商品列表(首頁)檢視
     public function listMerchandise()
     {
         //每頁資料量
@@ -105,10 +107,14 @@ class MerchandiseController extends Controller
                 $Merchandise->photo = url($Merchandise->photo);
             }
         }
+        //cart total
+        $cartTotalQuantity = \Cart::getTotalQuantity();
         $binding = [
             'title' => '商品列表',
             'MerchandisePaginate' => $MerchandisePaginate,
+            'cartTotalQuantity'=>$cartTotalQuantity
         ];
+        Log::debug($cartTotalQuantity);
         return view('merchandise.listMerchandise', $binding);
     }
     //(客用)商品首頁價格降序排列
@@ -225,7 +231,7 @@ class MerchandiseController extends Controller
             //購買後數量
             $remain_count_after_buy = $Merchandise->remain_count - $buy_count;
             //購買完後負數 代表不足夠賣給客戶
-            if ($remain_count_after_buy < 0) {
+                if ($remain_count_after_buy < 0) {
                 throw new Exception('商品數量不足，無法購買');
             }
             //紀錄購買後的剩餘數量
